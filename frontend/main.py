@@ -5,9 +5,11 @@ import logging
 import requests
 import io
 from PIL import Image
-from utils import transfer_coordi_2_pixel
+from utils import transfer_coordi_2_pixel, transfer_pixel_2_corrdi, draw_path
 import time
 from multiprocessing import Value
+
+clock = pygame.time.Clock()
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
@@ -20,6 +22,7 @@ logger = logging.getLogger(__file__)
 backend_url = "http://localhost:930"
 destination_url = f"{backend_url}/backend/destination"
 
+FPS = 60
 window_size = (800, 500)
 car_size_height = 40
 map_path = "imgs/map.png"
@@ -33,7 +36,7 @@ destination_pos = [0, 0]
 # after_clicking_start: 点击开始按钮之后，但未确定终止位置
 # processing: 有起始，终止位置，更新路径 
 
-def main(CAR_LOCATION_X, CAR_LOCATION_Y):
+def main(CAR_LOCATION_X, CAR_LOCATION_Y, PATH):
     # 启动界面
     pygame.init()
     screen = pygame.display.set_mode(window_size)
@@ -99,31 +102,30 @@ def main(CAR_LOCATION_X, CAR_LOCATION_Y):
                     global destination_pos
                     destination_pos = click_pos
                     pygame.draw.circle(screen, (255, 0, 0), click_pos, 15)
+                    destination_corri = transfer_pixel_2_corrdi(destination_pos, map_real_size, map_unit, map_img.get_rect()[2:])
+                    try:
+                        res = requests.post(destination_url, json={"destination": destination_corri})
+                    except Exception as e:
+                        logger.info(e)
+                    logger.info("post destination")
                     pygame.mouse.set_cursor(*pygame.cursors.arrow)
                     status = "processing"
 
         elif status == "processing":
-            pygame.draw.circle(screen, (255, 0, 0), click_pos, 15)
             pygame.mouse.set_cursor(*pygame.cursors.arrow)
             pygame.draw.rect(screen, cancel_button_color, cancel_button)  # 绘制开始按钮
             screen.blit(cancel_button_text, cancel_button_text.get_rect(center = cancel_button.center))  # 绘制开始按钮上的文字
+            draw_path(screen, PATH, map_real_size, map_unit, map_img.get_rect()[2:])
+            pygame.draw.circle(screen, (255, 0, 0), click_pos, 15)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if cancel_button.collidepoint(event.pos):
                     status = "preparing"
-
-        
-
-
-
+            
 
         pygame.draw.rect(screen, start_button_color, start_button)  # 绘制开始按钮
         screen.blit(start_button_text, start_button_text.get_rect(center = start_button.center))  # 绘制开始按钮上的文字
-
-
-    
-        
         pygame.display.update()
-        time.sleep(0.05)
+        clock.tick(FPS)
 
 
 if __name__ == "__main__":
@@ -136,7 +138,6 @@ if __name__ == "__main__":
 # def main():
 #     
 #     # 尝试实现3个按钮: start, sent_destination, arrive
-#     res = requests.post(destination_url, json={"destination": (0, 0)})
-#     logger.info(res.status_code)
+
 
 #     return
