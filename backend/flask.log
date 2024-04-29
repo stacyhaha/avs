@@ -1,0 +1,126 @@
+2024-04-30 00:27:30,778 - root - WARNING - test
+2024-04-30 00:27:30,968 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:930
+ * Running on http://172.20.10.3:930
+2024-04-30 00:27:30,968 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-04-30 00:27:31,028 - root - INFO - get img
+2024-04-30 00:27:31,032 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:27:31] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:27:34,106 - root - INFO - get img
+2024-04-30 00:27:34,110 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:27:34] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:27:37,141 - root - INFO - get img
+2024-04-30 00:27:37,144 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:27:37] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:27:40,179 - root - INFO - get img
+2024-04-30 00:27:40,181 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:27:40] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:27:43,231 - root - INFO - get img
+2024-04-30 00:27:43,235 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:27:43] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:27:46,336 - root - INFO - get img
+2024-04-30 00:27:46,339 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:27:46] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:27:49,380 - root - INFO - get img
+2024-04-30 00:27:49,382 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:27:49] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:27:52,416 - root - INFO - get img
+2024-04-30 00:27:52,420 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:27:52] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:27:55,550 - root - INFO - get img
+2024-04-30 00:27:55,555 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:27:55] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:27:58,666 - root - INFO - get img
+2024-04-30 00:27:58,669 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:27:58] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:28:01,786 - root - INFO - get img
+2024-04-30 00:28:01,788 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:28:01] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:28:04,831 - root - INFO - get img
+2024-04-30 00:28:04,835 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:28:04] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:28:08,062 - root - INFO - get img
+2024-04-30 00:28:08,067 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:28:08] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:29:28,112 - root - WARNING - test
+2024-04-30 00:29:28,198 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:930
+ * Running on http://172.20.10.3:930
+2024-04-30 00:29:28,199 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-04-30 00:29:28,208 - root - INFO - get img
+2024-04-30 00:29:28,250 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:29:28] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:29:31,296 - root - INFO - get img
+2024-04-30 00:29:31,299 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:29:31] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:29:34,410 - root - INFO - get img
+2024-04-30 00:29:34,413 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:29:34] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:29:37,441 - root - INFO - get img
+2024-04-30 00:29:37,444 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:29:37] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:29:40,488 - root - INFO - get img
+2024-04-30 00:29:40,490 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:29:40] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:29:43,524 - root - INFO - get img
+2024-04-30 00:29:43,527 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:29:43] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:29:46,578 - root - INFO - get img
+2024-04-30 00:29:46,580 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:29:46] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:29:49,685 - root - INFO - get img
+2024-04-30 00:29:49,688 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:29:49] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:29:52,726 - root - INFO - get img
+2024-04-30 00:29:52,729 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:29:52] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:29:55,762 - root - INFO - get img
+2024-04-30 00:29:55,765 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:29:55] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:29:58,818 - root - INFO - get img
+2024-04-30 00:29:58,823 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:29:58] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:30:01,926 - root - INFO - get img
+2024-04-30 00:30:01,930 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:30:01] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:30:04,970 - root - INFO - get img
+2024-04-30 00:30:04,974 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:30:04] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:30:08,084 - root - INFO - get img
+2024-04-30 00:30:08,087 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:30:08] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:30:11,127 - root - INFO - get img
+2024-04-30 00:30:11,131 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:30:11] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:30:14,164 - root - INFO - get img
+2024-04-30 00:30:14,169 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:30:14] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:30:17,302 - root - INFO - get img
+2024-04-30 00:30:17,306 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:30:17] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:30:20,524 - root - INFO - get img
+2024-04-30 00:30:20,530 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:30:20] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:30:23,595 - root - INFO - get img
+2024-04-30 00:30:23,598 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:30:23] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:30:26,636 - root - INFO - get img
+2024-04-30 00:30:26,639 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:30:26] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:30:29,680 - root - INFO - get img
+2024-04-30 00:30:29,683 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:30:29] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:33:41,451 - root - WARNING - test
+2024-04-30 00:33:41,544 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:930
+ * Running on http://172.20.10.3:930
+2024-04-30 00:33:41,545 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2024-04-30 00:33:41,549 - root - INFO - get img
+2024-04-30 00:33:41,559 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:33:41] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:33:44,632 - root - INFO - get img
+2024-04-30 00:33:44,635 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:33:44] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:33:47,688 - root - INFO - get img
+2024-04-30 00:33:47,690 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:33:47] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:33:50,774 - root - INFO - get img
+2024-04-30 00:33:50,782 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:33:50] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:33:53,846 - root - INFO - get img
+2024-04-30 00:33:53,849 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:33:53] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:33:56,903 - root - INFO - get img
+2024-04-30 00:33:56,911 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:33:56] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:33:59,968 - root - INFO - get img
+2024-04-30 00:33:59,970 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:33:59] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:03,038 - root - INFO - get img
+2024-04-30 00:34:03,041 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:03] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:06,140 - root - INFO - get img
+2024-04-30 00:34:06,142 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:06] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:09,205 - root - INFO - get img
+2024-04-30 00:34:09,208 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:09] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:12,258 - root - INFO - get img
+2024-04-30 00:34:12,269 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:12] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:15,340 - root - INFO - get img
+2024-04-30 00:34:15,342 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:15] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:18,422 - root - INFO - get img
+2024-04-30 00:34:18,425 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:18] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:21,567 - root - INFO - get img
+2024-04-30 00:34:21,570 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:21] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:24,619 - root - INFO - get img
+2024-04-30 00:34:24,621 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:24] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:27,733 - root - INFO - get img
+2024-04-30 00:34:27,735 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:27] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:30,844 - root - INFO - get img
+2024-04-30 00:34:30,849 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:30] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:33,916 - root - INFO - get img
+2024-04-30 00:34:33,919 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:33] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:36,980 - root - INFO - get img
+2024-04-30 00:34:36,983 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:36] "POST /img_test HTTP/1.1" 200 -
+2024-04-30 00:34:40,071 - root - INFO - get img
+2024-04-30 00:34:40,075 - werkzeug - INFO - 127.0.0.1 - - [30/Apr/2024 00:34:40] "POST /img_test HTTP/1.1" 200 -

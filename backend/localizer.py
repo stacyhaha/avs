@@ -56,13 +56,13 @@ class Localizer:
         q2 = np.float32([ keypoints2[m.trainIdx].pt for m in good ])
 
 
-        draw_params = dict(matchColor = -1, # draw matches in green color
-                singlePointColor = None,
-                matchesMask = None, # draw only inliers
-                flags = 2)
-        img3 = cv2.drawMatches(current_image, keypoints1, last_image, keypoints2, good ,None,**draw_params)
-        cv2.imshow("image", img3)
-        cv2.waitKey(0)
+        # draw_params = dict(matchColor = -1, # draw matches in green color
+        #         singlePointColor = None,
+        #         matchesMask = None, # draw only inliers
+        #         flags = 2)
+        # img3 = cv2.drawMatches(current_image, keypoints1, last_image, keypoints2, good ,None,**draw_params)
+        # cv2.imshow("image", img3)
+        # cv2.waitKey(0)
         return q1, q2
     
     @staticmethod

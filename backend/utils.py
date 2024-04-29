@@ -1,7 +1,25 @@
+import sys
+import cv2
 from PIL import Image, ImageDraw
 from io import BytesIO
 import base64
 import numpy as np
+import logging 
+
+import sys
+
+# 将 stdout 和 stderr 重定向到终端
+sys.stdout = sys.__stdout__
+sys.stderr = sys.__stderr__
+
+
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    datefmt="%m/%d/%Y %H:%M:%S",
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
 
 def transfer_loc_from_centi_to_grid_map(centi_loc):
     # return coordination in grid map
@@ -14,12 +32,8 @@ def decompress_base64_to_image(base64_data):
 
 
 def compress_image_to_base64(image):
-    buffer = BytesIO()
-    image.save(buffer, format="PNG")  # 将图像保存为 PNG 格式
-    # 获取图像数据
-    image_data = buffer.getvalue()
-    # 使用 base64 进行编码
-    base64_encoded = base64.b64encode(image_data).decode("utf-8")
+    _, buffer = cv2.imencode(".jpg", image)
+    base64_encoded = base64.b64encode(buffer).decode("utf-8")
     return base64_encoded
 
 def draw_path_on_image(image_path, path , output_path , line_color=(255, 0, 0), line_width=5):

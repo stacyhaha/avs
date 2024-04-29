@@ -4,6 +4,7 @@ import requests
 import numpy as np
 import logging
 import sys
+import cv2
 from io import BytesIO
 from sensor_msgs.msg import Image
 
@@ -21,12 +22,8 @@ backend_url = "http://localhost:930"
 url_img = f"{backend_url}/backend/img"
 
 def compress_image_to_base64(image):
-    buffer = BytesIO()
-    image.save(buffer, format="PNG")  # 将图像保存为 PNG 格式
-    # 获取图像数据
-    image_data = buffer.getvalue()
-    # 使用 base64 进行编码
-    base64_encoded = base64.b64encode(image_data).decode("utf-8")
+    _, buffer = cv2.imencode(".jpg", image)
+    base64_encoded = base64.b64encode(buffer).decode("utf-8")
     return base64_encoded
 
 def image_callback(ros_image):

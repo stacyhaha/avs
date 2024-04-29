@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from col_img import col_img
+from edge.col_img_ros import col_img
 import sys
 from multiprocessing import Process, Queue
 import hiwonder
