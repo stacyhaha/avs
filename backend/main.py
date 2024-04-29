@@ -24,6 +24,7 @@ url_path = f"{frontend_url}/frontend/path"
 url_cmd = f"{edge_url}/edge/cmd"
 
 def merge_cmd(basic_driving_command, path, detect_result):
+    
     return basic_driving_command
 
 

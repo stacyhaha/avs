@@ -9,8 +9,9 @@ from PIL import Image
 
 def ros_image_to_cv2(ros_image):
     """Convert ROS image to OpenCV format."""
-    frame = np.frombuffer(ros_image.data, dtype=np.uint8).reshape(ros_image.height, ros_image.width, -1)
-    frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+    # frame = np.frombuffer(ros_image.data, dtype=np.uint8).reshape(ros_image.height, ros_image.width, -1)
+    numpy_image = np.array(ros_image)
+    frame = cv2.cvtColor(numpy_image, cv2.COLOR_RGB2BGR)
     gray_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     return gray_image
 
@@ -110,3 +111,11 @@ class BasicDriver:
                 corrected_x = np.clip(x + shift, 0, width - 1)
                 MapJ[y, x] = corrected_x
         return MapJ
+
+
+
+if __name__ == "__main__":
+    basic_driver = BasicDriver()
+    image = Image.open("data/basic_drive_test.png")
+    res = basic_driver.drive(image)
+    print(res)
