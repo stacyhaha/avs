@@ -121,21 +121,25 @@ class AStar:
             curr = curr.parent
         self.path_list.reverse()
         return self.path_list
-
-def main():
-    grid = np.loadtxt('../data/grid.txt', dtype=int)
-    planner = AStar(start_pos=(40, 40), end_pos=(270, 232), map_array=grid)
     
-    path = planner()
 
-    image_path = '../data/Map.jpg'
-    output_path = '../data/Map_plan.jpg'
-    draw_path_on_image(image_path, path, output_path)
+class PathPlanner:
+    def __init__(self, map_path):
+        self.grid = np.loadtxt(map_path, dtype=int)
+
+    def plan(self, current_loc, destination_loc):
+        planner = AStar(start_pos=current_loc, end_pos=destination_loc, map_array=self.grid)
+        path = planner()
+        path = list(map(lambda x:(x.x, x.y), path))
+        path = [current_loc] + path
+        return path
 
 
 
 if __name__ == "__main__":
-    main()
+    path_planner = PathPlanner("data/grid.txt")
+    path = path_planner.plan((40, 40), (270, 232))
+    print(path)
 
 
     
