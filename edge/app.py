@@ -6,6 +6,9 @@ from flask_cors import CORS
 from col_img import col_img
 import sys
 from multiprocessing import Process, Queue
+import hiwonder
+
+chassis = hiwonder.MecanumChassis()
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
@@ -22,12 +25,12 @@ CORS(app)
 def cmd_car():
     # 收到关于小车的控制，并实现对小车的控制
     print("get cmd")
-    cmd = request.json
+    cmd = request.json["cmd"]
     print(cmd)
+    chassis.set_velocity(cmd)
 
 def run_flask():
     app.run(host="0.0.0.0", port=931)
-
 
 
 if __name__ == "__main__":

@@ -34,6 +34,7 @@ def run_flask(Q, Destination_X, Destination_Y):
         Destination_X.value = destination[0]
         Destination_Y.value = destination[1]
         print("destination", Destination_X.value, Destination_Y.value)
+        # if no need to do path planning, destination.value is -1
         return {"status": "ok"}
     
     app.run(host="0.0.0.0", port=930)

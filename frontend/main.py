@@ -121,6 +121,12 @@ def main(CAR_LOCATION_X, CAR_LOCATION_Y, PATH):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if cancel_button.collidepoint(event.pos):
                     status = "preparing"
+                    
+                try:
+                    res = requests.post(destination_url, json={"destination": [-1, -1]})
+                except Exception as e:
+                    logger.info(e)
+                logger.info("post destination")
             
 
         pygame.draw.rect(buffer_surface, start_button_color, start_button)  # 绘制开始按钮

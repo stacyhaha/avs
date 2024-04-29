@@ -32,7 +32,7 @@ def compress_image_to_base64(image):
 def image_callback(ros_image):
     image = np.ndarray(shape=(ros_image.height, ros_image.width, 3), dtype=np.uint8, buffer=ros_image.data)
     image_base64 = compress_image_to_base64(image)
-    res = requests.post(url_img, json={"image": image_base64})
+    res = requests.post(url_img, json={"img": image_base64})
     logger.info(res.status_code)
 
 

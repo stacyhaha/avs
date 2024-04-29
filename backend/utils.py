@@ -12,6 +12,16 @@ def decompress_base64_to_image(base64_data):
     image = Image.open(BytesIO(image_data))
     return image
 
+
+def compress_image_to_base64(image):
+    buffer = BytesIO()
+    image.save(buffer, format="PNG")  # 将图像保存为 PNG 格式
+    # 获取图像数据
+    image_data = buffer.getvalue()
+    # 使用 base64 进行编码
+    base64_encoded = base64.b64encode(image_data).decode("utf-8")
+    return base64_encoded
+
 def draw_path_on_image(image_path, path , output_path , line_color=(255, 0, 0), line_width=5):
     image = Image.open(image_path)
     
