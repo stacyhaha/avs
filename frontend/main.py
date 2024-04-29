@@ -69,6 +69,7 @@ def main(CAR_LOCATION_X, CAR_LOCATION_Y, PATH):
     cancel_button_color = (0, 255, 0)
     cancel_button_text = font.render("cancel", True, (0, 0, 0))
 
+    buffer_surface = pygame.Surface(window_size)
 
     while True:
         for event in pygame.event.get():
@@ -76,13 +77,13 @@ def main(CAR_LOCATION_X, CAR_LOCATION_Y, PATH):
                 pygame.quit()
                 sys.exit()
 
-        screen.fill((255, 255, 255))  # 白色背景
-        screen.blit(map_img, (0, 0))  # 重新绘制地图
+        buffer_surface.fill((255, 255, 255))  # 白色背景
+        buffer_surface.blit(map_img, (0, 0))  # 重新绘制地图
         
         # 实时更新小车的位置
         car_current_location = (CAR_LOCATION_X.value, CAR_LOCATION_Y.value)
         transfered_car_current_location = transfer_coordi_2_pixel(car_current_location, map_real_size, map_unit, map_img.get_rect()[2:])
-        screen.blit(car_img, transfered_car_current_location)
+        buffer_surface.blit(car_img, transfered_car_current_location)
         
         global status
         if status == "preparing":
@@ -113,17 +114,18 @@ def main(CAR_LOCATION_X, CAR_LOCATION_Y, PATH):
 
         elif status == "processing":
             pygame.mouse.set_cursor(*pygame.cursors.arrow)
-            pygame.draw.rect(screen, cancel_button_color, cancel_button)  # 绘制开始按钮
-            screen.blit(cancel_button_text, cancel_button_text.get_rect(center = cancel_button.center))  # 绘制开始按钮上的文字
-            draw_path(screen, PATH, map_real_size, map_unit, map_img.get_rect()[2:])
-            pygame.draw.circle(screen, (255, 0, 0), click_pos, 15)
+            pygame.draw.rect(buffer_surface, cancel_button_color, cancel_button)  # 绘制开始按钮
+            buffer_surface.blit(cancel_button_text, cancel_button_text.get_rect(center = cancel_button.center))  # 绘制开始按钮上的文字
+            draw_path(buffer_surface, PATH, map_real_size, map_unit, map_img.get_rect()[2:])
+            pygame.draw.circle(buffer_surface, (255, 0, 0), click_pos, 15)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if cancel_button.collidepoint(event.pos):
                     status = "preparing"
             
 
-        pygame.draw.rect(screen, start_button_color, start_button)  # 绘制开始按钮
-        screen.blit(start_button_text, start_button_text.get_rect(center = start_button.center))  # 绘制开始按钮上的文字
+        pygame.draw.rect(buffer_surface, start_button_color, start_button)  # 绘制开始按钮
+        buffer_surface.blit(start_button_text, start_button_text.get_rect(center = start_button.center))  # 绘制开始按钮上的文字
+        screen.blit(buffer_surface, (0, 0))
         pygame.display.update()
         clock.tick(FPS)
 

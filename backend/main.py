@@ -27,35 +27,42 @@ def merge_cmd(basic_driving_command, path, detect_result):
     return basic_driving_command
 
 
-def main(img_queue, destination):
+def main(img_queue, destination_x, destination_y):
     basic_driver = BasicDriver()
     localizer = Localizer()
     object_detector = ObjectDetector()
     path_planner = PathPlanner()
     path = None
 
-    while not img_queue.empty():
-        img_base64 = img_queue.get()
-        img = decompress_base64_to_image(img_base64)
+    while True:
+        img_queue.empty()
+        print("hahah")
+        # img_base64 = img_queue.get()
+        # img = decompress_base64_to_image(img_base64)
 
         # todo: 这里之后会改成多进程
-        basic_driving_command = basic_driver.drive(img)
-        current_position = localizer.localize(img)
-        detect_result = object_detector.detect(img)
-        current_position_in_grip_map = transfer_loc_from_centi_to_grid_map(current_position)
-        res = requests.post(url_current_position, json={"position": current_position_in_grip_map})
-        logger.info(res.status_code)
-
-
-        if destination[0] is not None:
-            path = path_planner.plan(current_position_in_grip_map, destination[0])
+        basic_driving_command = basic_driver.drive(1)
+        current_location = localizer.localize(1)
+        detect_result = object_detector.detect(1)
+        current_location_in_grip_map = transfer_loc_from_centi_to_grid_map(current_location)
+        try:
+            res = requests.post(url_current_position, json={"car_location": current_location_in_grip_map})
+        except Exception as e:
+            print(e)
+        
+        if destination_x.value > 0:
+            path = path_planner.plan(current_location_in_grip_map, (destination_x.value, destination_y.value))
             res = requests.post(url_path, json={"path": path})
+            print('post path')
+            print(path)
             logger.info(res.status_code)
         else:
             path = None
 
         # merge detect, basic_driving, path的指令
         cmd = merge_cmd(basic_driving_command, path, detect_result)
-        res = requests.post(url_cmd, json={"cmd": cmd})
-        logger.info(res.status_code)
-        time.sleep(0.5)
+        try: 
+            res = requests.post(url_cmd, json={"cmd": cmd})
+        except Exception as e:
+            print(e)
+        time.sleep(0.1)
