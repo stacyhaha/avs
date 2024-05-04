@@ -128,6 +128,7 @@ class PathPlanner:
         self.grid = np.loadtxt(map_path, dtype=int)
 
     def plan(self, current_loc, destination_loc):
+        #size = (292,255)，两维的坐标第一个是横坐标，第二个是纵坐标，起始坐标可以设置成（20，20），车库坐标（190，100）
         planner = AStar(start_pos=current_loc, end_pos=destination_loc, map_array=self.grid)
         path = planner()
         path = list(map(lambda x:(x.x, x.y), path))
