@@ -48,22 +48,27 @@ def test_basic_driver(shared_data):
     logger.warning("test")  
 
     basic_driver = BasicDriver()
-
+    i = 0
     while True:
         if len(shared_data.value) > 0:
             img = shared_data.value.decode()
             img = decompress_base64_to_image(img)
             
             st = time.time()
-            cmd = basic_driver.drive(img)
+            # cmd = basic_driver.drive(img)
             logger.info(f"driving car process one pic {time.time()-st:.3f} s")
-            logger.info(str(cmd))
+            # logger.info(str(cmd))
 
             img = np.array(img)
             opencv_image = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+            cv2.imwrite(f"{i}.png", opencv_image)
+            i += 1
+
             
             cv2.imshow("Image", opencv_image)
-            cv2.waitKey(200)
+            cv2.waitKey(2000)
+
+
             
 
 

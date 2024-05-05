@@ -68,8 +68,6 @@ def test_basic_driver(shared_data):
 
 
 
-
-
 if __name__ == "__main__":
     img_str = multiprocessing.Array("c", 10*1024*1024, lock=False)
     app_process = multiprocessing.Process(target=run_flask, args=(img_str, ))
