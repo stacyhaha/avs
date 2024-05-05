@@ -102,9 +102,9 @@ class BasicDriver:
         return calculate_driving_commands(curvature)
 
 
-if __name__ == "__main__":
-    basic_driver = BasicDriver()
-    image_path = r"D:\ISY5003\ISY5003\avs\data\11.png"
-    image = Image.open(image_path)
-    res = basic_driver.drive(image)
-    print(res)
+# if __name__ == "__main__":
+#     basic_driver = BasicDriver()
+#     image_path = r"D:\ISY5003\ISY5003\avs\data\11.png"
+#     image = Image.open(image_path)
+#     res = basic_driver.drive(image)
+#     print(res)
