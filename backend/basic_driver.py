@@ -36,14 +36,14 @@ def calculate_curvature(lines):
 
 def calculate_driving_commands(curvature):
     """Calculate driving commands based on curvature."""
-    if curvature > 0.8:
-        speed = 60
+    if curvature > 0.1:
+        speed = 45
         direction = 90
-        bias = int(np.clip(curvature * 0.1, -2, 2))
+        bias = int(np.clip(curvature * 5, -30, 30))
     else:
         speed = int(max(10, 60 - 50 * curvature))
         direction = 90
-        bias = int(np.clip(curvature * 10, -2, 2))
+        bias = int(np.clip(curvature * -600, -30, 30))
     return speed, direction, bias
 
 class BasicDriver:
