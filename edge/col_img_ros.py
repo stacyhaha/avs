@@ -28,14 +28,27 @@ def compress_image_to_base64(image):
 
 def image_callback(ros_image):
     image = np.ndarray(shape=(ros_image.height, ros_image.width, 3), dtype=np.uint8, buffer=ros_image.data)
-    image_base64 = compress_image_to_base64(image)
-    res = requests.post(url_img, json={"img": image_base64})
-    logger.info(res.status_code)
+    try:
+        image_base64 = compress_image_to_base64(image)
+        res = requests.post(url_img, json={"img": image_base64})
+        logger.info(res.status_code)
+    except:
+        pass 
+    global shared_image
+    shared_image = image
 
 
-def col_img():
+def show_image():
+    while True:
+        if shared_image is not None:
+            image = cv2.cvtColor(shared_image, cv2.COLOR_RGB2BGR)
+            cv2.imshow("Image", image)
+            cv2.waitKey(200)
+
+
+if __name__ == "__main__":
+    shared_image = None
     rospy.init_node("collect_data", anonymous=True)
     img_pub = rospy.Subscriber('/usb_cam/image_rect_color', Image, image_callback)
 
-
-
+    show_image()

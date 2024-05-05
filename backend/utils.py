@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 def transfer_loc_from_centi_to_grid_map(centi_loc):
+    
     # return coordination in grid map
     return (2, 3)
 
