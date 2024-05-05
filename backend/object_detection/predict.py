@@ -173,7 +173,7 @@ def process_file(file_path, model):
 if __name__ == '__main__':
     model = ObjectDetection()
     # 检查这是一个文件还是目录
-    path = '/Users/laiweizhi/Desktop/object_detection_part/ts_test/IMG_0540.JPG'
+    path = '/Users/laiweizhi/Desktop/object_detection_part/ts_test'
     if os.path.isdir(path):
         # 如果是目录，则处理目录中的所有文件
         for filename in os.listdir(path):
