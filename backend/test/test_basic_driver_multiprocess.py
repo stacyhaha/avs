@@ -73,20 +73,20 @@ def test_basic_driver(shared_data):
                 img = np.array(img)
                 opencv_image = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
                 cv2.imwrite(f"{i}.png", opencv_image)
-                
-                if  i == 0:
+                logger.info(i)
+                if i == 0:
                     with open("cmd.txt", "w") as f:
-                        f.write()
+                        f.write("")
                 with open("cmd.txt", "a") as f:
-                    f.write(f"{i}")
+                    f.write(f"{i}.png, cmd {str(cmd)}\n")
                 i += 1
 
 
                 
                 cv2.imshow("Image", opencv_image)
-                cv2.waitKey(2000)
-            except:
-                pass
+                cv2.waitKey(20)
+            except Exception as e:
+                logger.error(str(e))
 
 
             
@@ -105,7 +105,3 @@ if __name__ == "__main__":
     
     app_process.join()
     test_basic_driver_process.join()
-
-
-
-
