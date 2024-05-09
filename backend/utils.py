@@ -42,7 +42,8 @@ def draw_path_on_image(image_path, path , output_path , line_color=(255, 0, 0), 
     
     draw = ImageDraw.Draw(image)
     #这里得按照cell的大小缩放一下
-    adjusted_path = [(node.x * 2, node.y * 2) for node in path]
+    adjusted_path = [(x * 2, (image.height - (y * 2)) - 1) for x, y in path]
+    #adjusted_path = [(x * 2, y * 2) for x, y in path]
     draw.line(adjusted_path, fill=line_color, width=line_width)
 
     image.save(output_path)
@@ -82,3 +83,24 @@ def identify_obstacles(image_path, grid_size):
 
     np.savetxt('grid.txt', grid, fmt="%d")  # 保存网格数据为文本文件
     return grid
+
+def check_obstacle(map_array, x, y, high):
+    # 调整 y 坐标来匹配 AStar 中使用的坐标系统
+    actual_y = high - y - 1
+    return map_array[actual_y, x] == 1
+
+
+
+
+def draw_map(grid, path=None):
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.imshow(grid, cmap='Greys', origin='lower')  # 使左下角为原点
+
+    if path:
+        # 从 Node 对象中提取 x 和 y 坐标
+        xs, ys = zip(*[(node.x, node.y) for node in path])
+        ax.plot(xs, ys, marker='o', color='red')  # 绘制路径
+
+    plt.show()
