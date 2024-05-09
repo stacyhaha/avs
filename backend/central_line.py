@@ -14,7 +14,7 @@ import mediapipe as mp
 from sensor_msgs.msg import Image
 from PyQt5.QtCore import Qt, QPoint, QRect
 from PyQt5.QtWidgets import QApplication, QWidget
-from PyQt5.QtGui import QPainter, QPixmap, QColor, QPen, QFont
+from PyQt5.QtGui import QPainter, QPixmap, QColor,QPen,QFont
 
 # 巡线分拣
 
@@ -30,8 +30,8 @@ at_detector = apriltag.Detector(apriltag.DetectorOptions(families='tag36h11'))
 # 放置坐标
 TARGET_POSITIONS = {
     1: (-100, -180, 0),
-    2: (0, -180, 0),
-    3: (100, -180, 0)}
+    2: ( 0, -180, 0),
+    3: ( 100, -180, 0)}
 
 TRACKING_POSITION = (0, -120, 120)
 
@@ -63,7 +63,7 @@ class TrackingSorting:
             self.T = np.array(self.camera_params['T'], dtype=np.float64).reshape(3, 1)
 
 
-# 机器人跟踪线程
+#机器人跟踪线程
 def move():
     rospy.sleep(8)
     while True:
@@ -86,11 +86,10 @@ def move():
         rospy.sleep(0.01)
 
 
-# 作为子线程开启
+#作为子线程开启
 th = threading.Thread(target=move)
 th.setDaemon(True)
 th.start()
-
 
 # 画面像素坐标转换现实坐标函数
 def camera_to_world(cam_mtx, r, t, img_points):
@@ -120,7 +119,6 @@ def camera_to_world(cam_mtx, r, t, img_points):
         world_pt.append(pt.T.tolist())
     return world_pt
 
-
 def rotation_mtx_to_euler(R):
     sy = math.sqrt(R[0, 0] * R[0, 0] + R[1, 0] * R[1, 0])
     singular = sy < 1e-6
@@ -137,6 +135,7 @@ def rotation_mtx_to_euler(R):
 
 # apriltag检测函数
 def Apriltag(img):
+    
     frame_gray = cv2.cvtColor(np.copy(img), cv2.COLOR_RGB2GRAY)
     tags = at_detector.detect(frame_gray)
     for tag in tags:
@@ -144,8 +143,8 @@ def Apriltag(img):
         center = tag.center.astype(int)
         cv2.drawContours(img, corners, -1, (255, 0, 0), 3)
         cv2.circle(img, tuple(center), 5, (255, 255, 0), 10)
-        cv2.putText(img, "id:%d" % tag.tag_id, (center[0], center[1] - 5),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
+        cv2.putText(img, "id:%d" % tag.tag_id,(center[0], center[1] - 5), 
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
 
     if len(tags) > 0:
         if state.moving_block is None:
@@ -162,7 +161,7 @@ def Apriltag(img):
                     if not state.sorting_state and not state.st:
                         state.st = True
                         state.tag_id = new_tag.tag_id
-
+                    
             state.moving_block = tags[0]
     else:
         state.count = 0
@@ -173,7 +172,6 @@ def Apriltag(img):
     cv2.line(img, (int(img_w / 2 - 10), int(img_h / 2)), (int(img_w / 2 + 10), int(img_h / 2)), (0, 255, 255), 2)
     cv2.line(img, (int(img_w / 2), int(img_h / 2 - 10)), (int(img_w / 2), int(img_h / 2 + 10)), (0, 255, 255), 2)
     return img
-
 
 # 找出面积最大的轮廓
 # 参数为要比较的轮廓的列表
@@ -189,66 +187,64 @@ def getAreaMaxContour(contours, area_min=10):
                 area_max_contour = c
     return area_max_contour, contour_area_max  # 返回最大的轮廓
 
-
 size = (640, 480)
-roi = [(220, 260, 0, 640, 0.1),
-       (280, 320, 0, 640, 0.4),
-       (340, 420, 0, 640, 0.5)]
+roi = [ (220, 260,  0, 640, 0.1), 
+        (280, 320,  0, 640, 0.4), 
+        (340, 420,  0, 640, 0.5)]
 roi_h1 = roi[0][0]
 roi_h2 = roi[1][0] - roi[0][0]
 roi_h3 = roi[2][0] - roi[1][0]
 roi_h_list = [roi_h1, roi_h2, roi_h3]
 
-
-# 巡线视觉处理函数
-def line_patrol(img_draw, color='red'):
+#巡线视觉处理函数
+def line_patrol(img_draw, color = 'red'):
+    
     n = 0
     center_ = []
     weight_sum = 0
     centroid_x_sum = 0
     img_h, img_w = img_draw.shape[:2]
     frame_resize = cv2.resize(img_draw, size, interpolation=cv2.INTER_NEAREST)
-    frame_gb = cv2.GaussianBlur(frame_resize, (3, 3), 3)
+    frame_gb = cv2.GaussianBlur(frame_resize, (3, 3), 3)   
 
-    # 将图像分割成上中下三个部分，这样处理速度会更快，更精确
+    #将图像分割成上中下三个部分，这样处理速度会更快，更精确
     for r in roi:
         area_max = 0
         areaMaxContour = 0
         roi_h = roi_h_list[n]
-        n += 1
+        n += 1       
         blobs = frame_gb[r[0]:r[1], r[2]:r[3]]
         frame_lab = cv2.cvtColor(blobs, cv2.COLOR_RGB2LAB)  # 将图像转换到LAB空间
-        frame_mask = cv2.inRange(frame_lab, tuple(target_colors[color]['min']),
-                                 tuple(target_colors[color]['max']))  # 对原图像和掩模进行位运算
+        frame_mask = cv2.inRange(frame_lab, tuple(target_colors[color]['min']), tuple(target_colors[color]['max']))  #对原图像和掩模进行位运算                
         opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # 开运算
-        closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # 闭运算
-        cnts = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_L1)[-2]  # 找出所有轮廓
-        cnt_large, area = getAreaMaxContour(cnts)  # 找到最大面积的轮廓
-        if cnt_large is not None:  # 如果轮廓不为空
-            rect = cv2.minAreaRect(cnt_large)  # 最小外接矩形
-            box = np.int0(cv2.boxPoints(rect))  # 最小外接矩形的四个顶点
+        closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # 闭运算      
+        cnts = cv2.findContours(closed , cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_L1)[-2]#找出所有轮廓
+        cnt_large, area = getAreaMaxContour(cnts)#找到最大面积的轮廓
+        if cnt_large is not None:#如果轮廓不为空
+            rect = cv2.minAreaRect(cnt_large)#最小外接矩形
+            box = np.int0(cv2.boxPoints(rect))#最小外接矩形的四个顶点
             for i in range(4):
-                box[i, 1] = box[i, 1] + (n - 1) * roi_h + roi[0][0]
+                box[i, 1] = box[i, 1] + (n - 1)*roi_h + roi[0][0]
                 box[i, 1] = int(Misc.val_map(box[i, 1], 0, size[1], 0, img_h))
-            for i in range(4):
+            for i in range(4):                
                 box[i, 0] = int(Misc.val_map(box[i, 0], 0, size[0], 0, img_w))
-
-            cv2.drawContours(img_draw, [box], -1, (0, 0, 255, 255), 2)  # 画出四个点组成的矩形
-            # 获取矩形的对角点
+                
+            cv2.drawContours(img_draw, [box], -1, (0,0,255,255), 2)#画出四个点组成的矩形
+            #获取矩形的对角点
             pt1_x, pt1_y = box[0, 0], box[0, 1]
-            pt3_x, pt3_y = box[2, 0], box[2, 1]
-            state.line_breadth = abs(pt3_x - pt1_x)
-            center_x, center_y = (pt1_x + pt3_x) / 2, (pt1_y + pt3_y) / 2  # 中心点
-            cv2.circle(img_draw, (int(center_x), int(center_y)), 5, (0, 0, 255), -1)  # 画出中心点
-            center_.append([center_x, center_y])
-            # 按权重不同对上中下三个中心点进行求和
+            pt3_x, pt3_y = box[2, 0], box[2, 1]    
+            state.line_breadth = abs(pt3_x-pt1_x)        
+            center_x, center_y = (pt1_x + pt3_x) / 2, (pt1_y + pt3_y) / 2 #中心点       
+            cv2.circle(img_draw, (int(center_x), int(center_y)), 5, (0,0,255), -1) #画出中心点
+            center_.append([center_x, center_y])                        
+            #按权重不同对上中下三个中心点进行求和 
             centroid_x_sum += center_x * r[4]
             weight_sum += r[4]
 
     if weight_sum is not 0:
         state.line_centery = int(center_y)
-        state.line_centerx = int(centroid_x_sum / weight_sum)  # 求最终得到的中心点
-        cv2.circle(img_draw, (state.line_centerx, int(center_y)), 10, (0, 255, 255), -1)  # 画出中心
+        state.line_centerx = int(centroid_x_sum / weight_sum) #求最终得到的中心点
+        cv2.circle(img_draw, (state.line_centerx, int(center_y)), 10, (0,255,255), -1) #画出中心  
 
     else:
         state.line_centerx = -1
@@ -268,7 +264,6 @@ def image_proc():
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     cv2.imshow(ROS_NODE_NAME, image)
     cv2.waitKey(1)
-
 
 def process_and_draw_center_line(image):
     height = image.shape[0]
@@ -301,8 +296,7 @@ def shutdown(signum, frame):
     motor.set_speed(0, 2)
     motor.set_speed(0, 3)
     motor.set_speed(0, 4)
-    sys.exit()
-
+    sys.exit()    
 
 signal.signal(signal.SIGINT, shutdown)
 
@@ -315,16 +309,16 @@ if __name__ == '__main__':
 
     jetmax = hiwonder.JetMax()
     sucker = hiwonder.Sucker()
-    jetmax.go_home(2, 3)
+    jetmax.go_home(2,3)
     rospy.sleep(2)
     jetmax.set_position(TRACKING_POSITION, 1)
     target_colors = rospy.get_param('/lab_config_manager/color_range_list', {})
-    del [target_colors['white']]
+    del[target_colors['white']]
     image_sub = rospy.Subscriber('/usb_cam/image_rect_color', Image, image_callback, queue_size=1)
 
     while True:
-        try:
-            image_proc()
-        except Exception as e:
-            print(e)
-            sys.exit()
+     try:
+         image_proc()
+     except Exception as e:
+         print(e)
+         sys.exit()
