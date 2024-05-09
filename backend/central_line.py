@@ -259,8 +259,7 @@ def image_proc():
     if state.skip == 'line':
         # 使用新的中线检测处理，只处理图像下半3/5部分
         image = process_and_draw_center_line(image)
-    # 保持其他处理不变
-    image = cv2.resize(image, size)
+    image = cv2.resize(image, (640, 480))
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     cv2.imshow(ROS_NODE_NAME, image)
     cv2.waitKey(1)
