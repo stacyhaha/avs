@@ -21,16 +21,16 @@ app = Flask(__name__)
 CORS(app)
 
 
+logger = logging.getLogger()
+fh = logging.FileHandler("test_localizer.log")
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)  # 把formater绑定到fh上
+logger.addHandler(fh)
+logger.warning("test")  
+
+
 def run_flask(shared_data):
-    logger = logging.getLogger()
-    fh = logging.FileHandler("flask.log")
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    fh.setFormatter(formatter)  # 把formater绑定到fh上
-    logger.addHandler(fh)
-    logger.warning("test")  
-
-
-    @app.route("/img_test", methods=["POST"])
+    @app.route("/backend/img", methods=["POST"])
     def get_img():
         logger.info("get img")
         img = request.json["img"]
@@ -40,15 +40,7 @@ def run_flask(shared_data):
 
 
 def test_basic_driver(shared_data):
-    logger = logging.getLogger()
-    fh = logging.FileHandler("test_localizer.log")
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    fh.setFormatter(formatter)  # 把formater绑定到fh上
-    logger.addHandler(fh)
-    logger.warning("test")  
-
     localizer = Localizer()
-
     while True:
         if len(shared_data.value) > 0:
             img = shared_data.value.decode()

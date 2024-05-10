@@ -175,7 +175,6 @@ def main():
 
     # 如果起点和终点都不在障碍物上，则进行路径规划
     if not check_obstacle(grid, start_pos[0], start_pos[1], grid.shape[0]) and not check_obstacle(grid, end_pos[0], end_pos[1], grid.shape[0]):
-        
         ######
 
         #重点在这里readme！！！
@@ -183,7 +182,6 @@ def main():
         #返回两个列表path, direction，path里面是每一步的坐标，direction里面是每一步的方向
         
         ######
-
         path, direction = path_planner.plan(start_pos, end_pos)
         if path:
             # 绘制路径到图像
@@ -199,5 +197,67 @@ def main():
         print(path)
         print(direction)
 
+
+def exe(start_pos, end_pos):
+    import numpy as np
+    from utils import check_obstacle, draw_path_on_image
+
+    grid = np.loadtxt('data/grid.txt', dtype=int)
+    path_planner = PathPlanner(grid)
+    
+
+
+    # 定义每个方向的初始参数
+    command_templates = {
+        'forward': ['forward', 60, 90, 0, 0.1],
+        'left': ['left', 0, 90, 19, 1.40],
+        'right': ['right', 0, 90, -19, 1.58],
+        'backward': ['backward', 0, 0, 0, 0.0]
+    }
+
+    # 检查起点和终点是否在障碍物上
+    if check_obstacle(grid, start_pos[0], start_pos[1], grid.shape[0]):
+        print("起点在障碍物上！")
+    else:
+        print("起点ok")
+
+    if check_obstacle(grid, end_pos[0], end_pos[1], grid.shape[0]):
+        print("终点在障碍物上！")
+    else:
+        print("终点ok")
+
+    # 如果起点和终点都不在障碍物上，则进行路径规划
+    if not check_obstacle(grid, start_pos[0], start_pos[1], grid.shape[0]) and not check_obstacle(grid, end_pos[0], end_pos[1], grid.shape[0]):
+        path, directions = path_planner.plan(start_pos, end_pos)
+        if path:
+            # 准备指令列表
+            commands = []
+            for direction in directions:
+                if commands and commands[-1][0] == direction:
+                    # 叠加时间值并保留两位小数
+                    commands[-1][-1] = round(commands[-1][-1] + command_templates[direction][-1], 2)
+                else:
+                    # 添加新指令，使用预定义的模板并调整时间的精度
+                    new_command = command_templates[direction][:]
+                    new_command[-1] = round(new_command[-1], 2)
+                    commands.append(new_command)
+
+            # 绘制路径到图像
+            image_path = 'data/Map.jpg'  # 确保使用正确的图像文件名
+            output_path = 'data/Map_plan.jpg'
+            draw_path_on_image(image_path, path, output_path)
+            print("Path coordinates:")
+            for node in path:
+                print(f"({node[0]}, {node[1]})")  # 输出转换后的坐标
+            print("Commands:")
+            for cmd in commands:
+                print(cmd)
+        else:
+            print("No path found.")
+    print(commands)
+    return commands
+
 if __name__ == "__main__":
-    main()
+    start_pos = (20, 20)
+    end_pos = (180, 220)
+    exe(start_pos, end_pos)
