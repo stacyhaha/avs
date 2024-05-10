@@ -1,14 +1,15 @@
 import os
+from PIL import Image
 import concurrent.futures
 from ultralytics import YOLO
 import matplotlib.pyplot as plt
 import cv2
 
 class ObjectDetection:
-    def __init__(self):
+    def __init__(self, tf_checkpoint, ts_checkpoint):
         self.device = 'mps'
-        self.tf_checkpoint = '/Users/laiweizhi/PycharmProjects/5004Project/runs/train3/weights/best.pt'
-        self.ts_checkpoint = '/Users/laiweizhi/PycharmProjects/5004Project/ultralytics-main/runs/detect/train14/weights/best.pt'
+        self.tf_checkpoint = tf_checkpoint
+        self.ts_checkpoint = ts_checkpoint
         self.model_tl = self.load_model(self.tf_checkpoint)
         self.model_ts = self.load_model(self.ts_checkpoint)
 
@@ -60,15 +61,15 @@ class ObjectDetection:
                 # 输出信息，可选
                 # print(f'Detection: {class_name} with confidence {conf:.2f} and area {area:.4f}')
 
-            processed_img = result.plot()
-            print(f'data type: {type(processed_img)}')
+            processed_img = result.plot(labels=False)
+            # print(f'data type: {type(processed_img)}')
 
 
-            if processed_img is not None:
-                processed_img = processed_img[:, :, [2, 1, 0]]  # 转换颜色通道顺序为RGB
-                plt.imshow(processed_img)
-                plt.axis('off')  # 关闭坐标轴
-                plt.show()
+            # if processed_img is not None:
+            #     processed_img = processed_img[:, :, [2, 1, 0]]  # 转换颜色通道顺序为RGB
+            #     plt.imshow(processed_img)
+            #     plt.axis('off')  # 关闭坐标轴
+            #     plt.show()
 
         for result in ts_results:
             if len(result.boxes) == 0:
@@ -96,15 +97,15 @@ class ObjectDetection:
                 # print(f'Detection: {class_name} with confidence {conf:.2f} and area {area:.4f}')
 
 
-            processed_img = result.plot()
-            print(f'data type: {type(processed_img)}')
+            processed_img = result.plot(labels=False)
+            # print(f'data type: {type(processed_img)}')
 
 
-            if processed_img is not None:
-                processed_img = processed_img[:, :, [2, 1, 0]]  # 转换颜色通道顺序为RGB
-                plt.imshow(processed_img)
-                plt.axis('off')  # 关闭坐标轴
-                plt.show()
+            # if processed_img is not None:
+            #     processed_img = processed_img[:, :, [2, 1, 0]]  # 转换颜色通道顺序为RGB
+            #     plt.imshow(processed_img)
+            #     plt.axis('off')  # 关闭坐标轴
+            #     plt.show()
 
         # 设置优先级
         # red(減速再停車), yellow(減速), green(不進行動作)
@@ -176,16 +177,10 @@ def process_file(file_path, model):
         print(action)
 
 if __name__ == '__main__':
-    model = ObjectDetection()
+    tf_checkpoint = 'object_detection/object_detection_part/traffic_light/weights/best.pt'
+    ts_checkpoint = 'object_detection/object_detection_part/traffic_signs/weights/best.pt'
+    model = ObjectDetection(tf_checkpoint, ts_checkpoint)
     # 检查这是一个文件还是目录
-    path = '/Users/laiweizhi/Desktop/object_detection_part/ts_test'
-    if os.path.isdir(path):
-        # 如果是目录，则处理目录中的所有文件
-        for filename in os.listdir(path):
-            file_path = os.path.join(path, filename)
-            process_file(file_path, model)
-    elif os.path.isfile(path):
-        # 如果是文件，直接处理这个文件
-        process_file(path, model)
-    else:
-        print(f"Error: {path} is neither a file nor a directory.")
+    path = 'object_detection/object_detection_part/traffic_light_images/TL_test1.jpeg'
+    imge = Image.open(path)
+    model.detect(imge)
