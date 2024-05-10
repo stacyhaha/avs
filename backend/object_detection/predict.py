@@ -62,6 +62,7 @@ class ObjectDetection:
                 # print(f'Detection: {class_name} with confidence {conf:.2f} and area {area:.4f}')
 
             processed_img = result.plot(labels=False)
+            processed_img = processed_img[:, :, [2, 1, 0]] 
             # print(f'data type: {type(processed_img)}')
 
 
@@ -98,6 +99,7 @@ class ObjectDetection:
 
 
             processed_img = result.plot(labels=False)
+            processed_img = processed_img[:, :, [2, 1, 0]] 
             # print(f'data type: {type(processed_img)}')
 
 

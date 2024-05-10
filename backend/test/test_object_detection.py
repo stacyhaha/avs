@@ -53,9 +53,9 @@ def test_detection(shared_data):
             img = decompress_base64_to_image(img)
             
             img = np.array(img)
-            opencv_image = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-            cv2.imshow("Image", opencv_image)
-            cv2.waitKey(100)
+            #opencv_image = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+            #cv2.imshow("Image", opencv_image)
+            # cv2.waitKey(100)
 
             st = time.time()
             try:
@@ -70,8 +70,8 @@ def test_detection(shared_data):
             try:
                 detect_image = res[-1]
                 opencv_image = cv2.cvtColor(detect_image, cv2.COLOR_RGB2BGR)
-                cv2.imshow("Image", opencv_image)
-                cv2.waitKey(100)
+                cv2.imshow("detect_image", opencv_image)
+                cv2.waitKey(10)
             except Exception as e:
                 logger.error(e)
             # try:
