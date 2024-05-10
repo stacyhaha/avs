@@ -25,7 +25,7 @@ class ObjectDetection:
         results = self.model_ts(frame)
         return results
 
-    def __call__(self, input_data):
+    def detect(self, input_data):
         tl_results = self.tl_predict(input_data)
         ts_results = self.ts_predict(input_data)
         speed = 0
@@ -60,13 +60,15 @@ class ObjectDetection:
                 # 输出信息，可选
                 # print(f'Detection: {class_name} with confidence {conf:.2f} and area {area:.4f}')
 
-            # processed_img = result.plot()
+            processed_img = result.plot()
+            print(f'data type: {type(processed_img)}')
 
-            # if processed_img is not None:
-            #     processed_img = processed_img[:, :, [2, 1, 0]]  # 转换颜色通道顺序为RGB
-            #     plt.imshow(processed_img)
-            #     plt.axis('off')  # 关闭坐标轴
-            #     plt.show()
+
+            if processed_img is not None:
+                processed_img = processed_img[:, :, [2, 1, 0]]  # 转换颜色通道顺序为RGB
+                plt.imshow(processed_img)
+                plt.axis('off')  # 关闭坐标轴
+                plt.show()
 
         for result in ts_results:
             if len(result.boxes) == 0:
@@ -94,12 +96,15 @@ class ObjectDetection:
                 # print(f'Detection: {class_name} with confidence {conf:.2f} and area {area:.4f}')
 
 
-            # processed_img = result.plot()
-            # if processed_img is not None:
-            #     processed_img = processed_img[:, :, [2, 1, 0]]  # 转换颜色通道顺序为RGB
-            #     plt.imshow(processed_img)
-            #     plt.axis('off')  # 关闭坐标轴
-            #     plt.show()
+            processed_img = result.plot()
+            print(f'data type: {type(processed_img)}')
+
+
+            if processed_img is not None:
+                processed_img = processed_img[:, :, [2, 1, 0]]  # 转换颜色通道顺序为RGB
+                plt.imshow(processed_img)
+                plt.axis('off')  # 关闭坐标轴
+                plt.show()
 
         # 设置优先级
         # red(減速再停車), yellow(減速), green(不進行動作)
@@ -158,7 +163,7 @@ class ObjectDetection:
         # if horn:
             # print("Horn: On for 1 second")
 
-        return detected_class, (speed, orientation, bias)
+        return detected_class, (speed, orientation, bias), processed_img
 
 
 def process_file(file_path, model):
@@ -166,7 +171,7 @@ def process_file(file_path, model):
                         'wmv', 'mpeg', 'asf', 'webm', 'gif', 'ts', 'mkv', 'm4v', 'mov'}
     ext = file_path.split('.')[-1].lower()
     if ext in valid_extensions:
-        predict, action = model(file_path)
+        predict, action, processed_img = model.detect(file_path)
         print(predict)
         print(action)
 
