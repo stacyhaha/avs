@@ -24,5 +24,4 @@ class PilotNetDriver():
         with torch.no_grad():
             image_tensor = torch.unsqueeze(image_tensor.to(device), dim=0)
             outputs = self.model(image_tensor)
-        return outputs[0].tolist()
-        
+        return outputs[0].tolist()        
