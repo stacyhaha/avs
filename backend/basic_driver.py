@@ -53,6 +53,8 @@ class TrackingSorting:
         self.line_breadth = 0
         self.camera_params = None
         self.pid_x = hiwonder.PID(0.18, 0.001, 0.02)
+	self.state = 'detecting'  # 初始状态设为'detecting'
+
 
     # 加载相机内参
     def load_camera_params(self):
@@ -106,27 +108,41 @@ def adjust_robot_movement(left_boundaries, right_boundaries):
     motor.set_speed(-state.speed - deflection, 4)
     
 
-#机器人跟踪线程
 def move():
-    rospy.sleep(8)
+    rospy.sleep(8)  # 初始等待，可能用于系统启动
     while True:
-        # 假设image是实时从摄像头获取的
-        image = image_queue.get()
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        _, binary_image = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
-        edges = find_edges(binary_image)
-        left_boundaries, right_boundaries = find_path_boundaries(edges)
+        if state.state == 'detecting':
+            # 从队列中获取图像
+            image = image_queue.get()
+            # 转换为灰度图
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            # 应用二值化
+            _, binary_image = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
+            # 查找边缘
+            edges = find_edges(binary_image)
+            # 确定路径边界
+            left_boundaries, right_boundaries = find_path_boundaries(edges)
 
-        if np.any(left_boundaries != -1) and np.any(right_boundaries != -1):  # 确保有有效的边界
-            adjust_robot_movement(left_boundaries, right_boundaries)
-        else:
-            # 如果没有有效的边界，停止机器人
-            motor.set_speed(0, 1)
-            motor.set_speed(0, 2)
-            motor.set_speed(0, 3)
-            motor.set_speed(0, 4)
+            if np.any(left_boundaries != -1) and np.any(right_boundaries != -1):
+                # 有有效的边界时调整机器人的运动
+                adjust_robot_movement(left_boundaries, right_boundaries)
+                state.state = 'waiting_for_next_image'  # 完成当前图像处理，等待新图像
+            else:
+                # 如果没有有效的边界，停止机器人
+                motor.set_speed(0, 1)
+                motor.set_speed(0, 2)
+                motor.set_speed(0, 3)
+                motor.set_speed(0, 4)
+                state.state = 'waiting_for_next_image'  # 没有找到有效路径，等待下一张图像
 
-        rospy.sleep(0.01)
+        elif state.state == 'waiting_for_next_image':
+            # 当状态为等待新图像时，暂停一段时间（这里用0.1秒）
+            rospy.sleep(0.1)
+            # 在适当的时间或条件下，状态应改变为'detecting'，可以通过其他事件触发
+            # 这里只是一个示例，您可能需要根据实际情况调整这部分逻辑
+
+        rospy.sleep(0.01)  # 短暂休眠，减少CPU占用
+
 
 
 #作为子线程开启
@@ -321,14 +337,14 @@ def process_and_draw_center_line(image):
 
 
 def image_callback(ros_image):
-    try:
-        image = np.ndarray(shape=(ros_image.height, ros_image.width, 3), dtype=np.uint8, buffer=ros_image.data)
-        if state.skip == 'line':
-            image = cv2.flip(image, 1)
-        image_queue.put_nowait(image)
+    if state.state == 'waiting_for_next_image':
+        try:
+            image = np.ndarray(shape=(ros_image.height, ros_image.width, 3), dtype=np.uint8, buffer=ros_image.data)
+            image_queue.put_nowait(cv2.flip(image, 1))
+            state.state = 'detecting'  # 改变状态以处理新图像
+        except:
+            pass
 
-    except:
-        pass
 
 
 def shutdown(signum, frame):
