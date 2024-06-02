@@ -56,19 +56,62 @@ class TrackingSorting:
 
     # 加载相机内参
     def load_camera_params(self):
-        self.camera_params = rospy.get_param('/camera_cal/block_params', self.camera_params)
-        if self.camera_params is not None:
-            self.K = np.array(self.camera_params['K'], dtype=np.float64).reshape(3, 3)
-            self.R = np.array(self.camera_params['R'], dtype=np.float64).reshape(3, 1)
-            self.T = np.array(self.camera_params['T'], dtype=np.float64).reshape(3, 1)
+        """Load camera parameters from ROS parameter server."""
+        try:
+            self.camera_params = rospy.get_param('/camera_cal/block_params', self.camera_params)
+            if self.camera_params:
+                self.K = np.array(self.camera_params['K'], dtype=np.float64).reshape(3, 3)
+                self.R = np.array(self.camera_params['R'], dtype=np.float64).reshape(3, 1)
+                self.T = np.array(self.camera_params['T'], dtype=np.float64).reshape(3, 1)
+        except Exception as e:
+            rospy.logerr(f"Failed to load camera parameters: {e}")
 
+def find_path_boundaries(edges):
+    rows, cols = edges.shape
+    left_boundaries = np.full(rows, -1)
+    right_boundaries = np.full(rows, -1)
+
+    for i in range(rows):
+        row = edges[i, :]
+        index = np.where(row == 255)[0]
+        if index.size > 0:
+            left_boundaries[i] = index[0]
+            right_boundaries[i] = index[-1]
+
+    return left_boundaries, right_boundaries
+
+def draw_center_line(img, left_boundaries, right_boundaries):
+    for i in range(len(left_boundaries)):
+        if left_boundaries[i] != -1 and right_boundaries[i] != -1:
+            center_x = (left_boundaries[i] + right_boundaries[i]) // 2
+            cv2.circle(img, (center_x, i), 1, (0, 255, 0), -1)  # Draw green dot
+
+    return img
+
+def find_edges(binary_image):
+    edges = cv2.Canny(binary_image, 50, 150)
+    return edges
+
+def adjust_robot_movement(left_boundaries, right_boundaries):
+    rows = len(left_boundaries)
+    mid_x = sum((l + r) // 2 for l, r in zip(left_boundaries, right_boundaries) if l != -1 and r != -1) / rows
+    error = state.centerX - mid_x  # 计算偏差
+    # 通过PID算法进行纠正
+    state.pid_x.update(error)
+    deflection = int(state.pid_x.output)
+    # 把基础速度和纠正速度进行合成，最终输出到四个电机上
+    motor.set_speed(-state.speed + deflection, 1)
+    motor.set_speed(state.speed - deflection, 2)
+    motor.set_speed(state.speed + deflection, 3)
+    motor.set_speed(-state.speed - deflection, 4)
+    
 
 #机器人跟踪线程
 def move():
     rospy.sleep(8)
     while True:
         # 假设image是实时从摄像头获取的
-        image = get_camera_image()
+        image = image_queue.get()
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         _, binary_image = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
         edges = find_edges(binary_image)
